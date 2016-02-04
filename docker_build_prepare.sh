@@ -4,7 +4,7 @@
 
 get_repo() {
     # get PVZD from master (release branch)
-    if [-e $repodir ] then
+    if [-e $repodir ] ; then
         cd $repodir && git pull && cd .. # already cloned
     else
         git clone $repourl # first time
@@ -13,6 +13,7 @@ get_repo() {
 
 dir=$(dirname `which $0`)  #absolute dirname of script
 cd ${dir}/opt
+
 
 repodir='PVZDjava'
 repourl='https://github.com/rhoerbe/${repodir}.git'
