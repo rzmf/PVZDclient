@@ -1,4 +1,4 @@
-FROM rhoerbe/docker-pvzd-pre
+FROM rhoerbe/pvzd-client-env
 MAINTAINER r2h2 <rhoerbe@hoerbe.at>
 
 

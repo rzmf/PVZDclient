@@ -22,5 +22,5 @@ else
     fi
 fi
 
-${sudo} docker rmi -f ${image}
-${sudo} docker build -t=${image} .
+${sudo} docker build -f Dockerfile_step1 -t=${image1} .
+${sudo} docker build -f Dockerfile_step2 -t=${image2} .

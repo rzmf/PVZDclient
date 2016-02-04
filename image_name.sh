@@ -2,4 +2,5 @@
 #
 
 # Image name
-image="rhoerbe/pvzd-admin"
+image1="rhoerbe/pvzd-client-env"
+image2="rhoerbe/pvzd-client-app"
