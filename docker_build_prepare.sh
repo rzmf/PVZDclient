@@ -15,12 +15,12 @@ dir=$(dirname `which $0`)  #absolute dirname of script
 cd ${dir}/opt
 
 
-repodir='PVZDjava'
-repourl='https://github.com/rhoerbe/${repodir}.git'
+repodir=PVZDjava
+repourl=https://github.com/rhoerbe/${repodir}.git
 get_repo
 
-repodir='PVZDpolman'
-repourl='https://github.com/rhoerbe/${repodir}.git'
+repodir=PVZDpolman
+repourl=https://github.com/rhoerbe/${repodir}.git
 #get_repo
 
 cd $repodir/dependent_pkg
