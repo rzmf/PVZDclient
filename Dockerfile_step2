@@ -5,12 +5,10 @@ MAINTAINER r2h2 <rhoerbe@hoerbe.at>
 # install MOCCA (requires GUI)
 RUN curl -O http://webstart.buergerkarte.at/mocca/webstart/mocca.jnlp
 
-ADD PVZD /PVZD
-WORKDIR /PVZD/PolicyManager
-RUN chmod +x /PVZD/PolicyManager/tests/PMPTestNosign.sh /PVZD/PolicyManager/tests/PAtool.sh
-
-# required to run unit tests
-ADD pycharm-helper /pycharm-helper
+ADD opt/PVZDpolman /opt/PVZDpolman
+ADD opt/PVZDjava /opt/PVZDjava
+WORKDIR /opt/PVZD/PolicyManager
+RUN chmod +x /opt/PVZD/PolicyManager/tests/testPMP.sh /opt/PVZD/PolicyManager/tests/testPAtool.sh
 
 #ADD start.sh /start.sh
 #RUN chmod a+x /start.sh

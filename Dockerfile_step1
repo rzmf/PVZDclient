@@ -11,7 +11,7 @@ RUN yum -y groups install "GNOME Desktop"
 RUN yum -y install java-1.8.0-openjdk-devel.x86_64
 RUN yum -y install epel-release
 RUN yum -y install python34-devel
-RUN python3.4 pip install -U pip
+RUN curl https://bootstrap.pypa.io/get-pip.py | python3.4
 
 # do stuff from PVZD/PolicyManager/requirements.txt step by step
 RUN yum -y install libffi-devel
@@ -28,5 +28,7 @@ ENV JAVA_HOME /etc/alternatives/java_sdk_1.8.0
 ENV JDK_HOME /etc/alternatives/java_sdk_1.8.0
 ENV JRE_HOME /etc/alternatives/java_sdk_1.8.0/jre
 RUN cd pyjnius && python3.4 setup.py install
+RUN cd YAmikep/json2html && python3.4 setup.py install
+RUN cd ordereddict-1.1 && python3.4 setup.py install
 RUN pip install future
 RUN pip freeze
