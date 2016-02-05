@@ -12,23 +12,11 @@ RUN yum -y install java-1.8.0-openjdk-devel.x86_64
 RUN yum -y install epel-release
 RUN yum -y install python34-devel
 RUN curl https://bootstrap.pypa.io/get-pip.py | python3.4
+ENV pip=pip3.4
 
 # do stuff from PVZD/PolicyManager/requirements.txt step by step
-RUN yum -y install libffi-devel
-RUN pip install cffi
+RUN yum -y install libffi-devel openssl-devel
+RUN $pip install cffi pyOpenSSL
 
-RUN yum -y install openssl-devel
-RUN pip install pyOpenSSL
+RUN $pip install cython future gitdb GitPython pytz requests simplejson
 
-RUN pip install gitdb GitPython pytz requests simplejson
-
-RUN pip install cython
-RUN git clone -b python-34 https://github.com/haricot/pyjnius.git
-ENV JAVA_HOME /etc/alternatives/java_sdk_1.8.0
-ENV JDK_HOME /etc/alternatives/java_sdk_1.8.0
-ENV JRE_HOME /etc/alternatives/java_sdk_1.8.0/jre
-RUN cd pyjnius && python3.4 setup.py install
-RUN cd YAmikep/json2html && python3.4 setup.py install
-RUN cd ordereddict-1.1 && python3.4 setup.py install
-RUN pip install future
-RUN pip freeze

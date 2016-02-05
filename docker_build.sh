@@ -22,7 +22,9 @@ else
     fi
 fi
 
+echo "building ${image1}"
 ${sudo} docker build -f=Dockerfile_step1 -t=${image1} .
-${sudo} docker build -f=Dockerfile_step2 -t=${image2} .
+echo "building ${image}"
+${sudo} docker build -f=Dockerfile_step2 -t=${image} .
 
 
