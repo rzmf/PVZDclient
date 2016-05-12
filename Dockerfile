@@ -15,8 +15,7 @@ RUN yum -y swap -- remove systemd-container systemd-container-libs -- install sy
 RUN yum -y install epel-release \
  && yum -y install python34-devel
 # pip should be packaged with py34, but isn't:
-COPY install/scripts/get-pip.py get-pip.py
-RUN python3.4 get-pip.py
+RUN curl https://bootstrap.pypa.io/get-pip.py | python3.4
 
 RUN yum -y install libffi-devel libxml2 libxml2-devel openssl-devel
 
