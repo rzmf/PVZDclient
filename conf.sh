@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # configure container
-export IMAGENAME="r2h2/pvzd-client-app"
+export IMAGENAME="rhoerbe/pvzd-client-app"
 export CONTAINERNAME="pvzd-client"
 export CONTAINERUSER='user'
 export CONTAINERUID=7000
