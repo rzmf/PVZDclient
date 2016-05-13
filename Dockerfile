@@ -15,7 +15,8 @@ RUN yum -y install epel-release \
 # pip should be packaged with py34, but isn't:
 RUN curl https://bootstrap.pypa.io/get-pip.py | python3.4
 
-RUN yum -y install libffi-devel libxml2 libxml2-devel openssl-devel  && yum clean
+RUN yum -y install libffi-devel libxml2 libxml2-devel openssl-devel \
+ && yum clean all
 
 # install MOCCA (requires GUI)
 RUN curl -O http://webstart.buergerkarte.at/mocca/webstart/mocca.jnlp
