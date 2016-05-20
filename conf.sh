@@ -17,12 +17,15 @@ export VOLROOT="/tmp"  # container volumes on docker host
 export VOLMAPPING="
     -v $VOLROOT/var/log/:/var/log:Z
     -v $VOLROOT/var/data/:/var/data:Z
-    -v /tmp/.X11-unix/:/tmp/.X11-unix
+    -v /tmp/.X11-unix/:/tmp/.X11-unix:Z
 "
 export STARTCMD='/start.sh'
 
 # first start: create user/group/host directories
+if [ $(id -u) -ne 0 ]; then
+    sudo="sudo"
+fi
 if ! id -u $CONTAINERUSER &>/dev/null; then
-    groupadd -g $CONTAINERUID $CONTAINERUSER
-    adduser -M -g $CONTAINERUSER -u $CONTAINERUID $CONTAINERUSER
+    $sudo groupadd -g $CONTAINERUID $CONTAINERUSER
+    $sudo adduser -M -g $CONTAINERUSER -u $CONTAINERUID $CONTAINERUSER
 fi

@@ -3,19 +3,26 @@ MAINTAINER r2h2 <rhoerbe@hoerbe.at>
 
 RUN yum -y install curl git gcc gcc-c++ ip lsof net-tools openssl wget which
 
-RUN yum -y groups install "GNOME Desktop" --setopt=group_package_types=mandatory \
+RUN yum -y groupinstall "X Window System" --setopt=group_package_types=mandatory \
+ && yum -y install xclock \
  && yum -y install java-1.8.0-openjdk-devel.x86_64
 
 # Need dbus running for USB interface -> https://github.com/CentOS/sig-cloud-instance-images/issues/22
 ENV container docker
 RUN yum -y swap -- remove systemd-container systemd-container-libs -- install systemd systemd-libs
 
-RUN yum -y install epel-release \
- && yum -y install python34-devel
+#RUN yum -y install epel-release \
+# && yum -y install python34-devel
 # pip should be packaged with py34, but isn't:
-RUN curl https://bootstrap.pypa.io/get-pip.py | python3.4
+#RUN curl https://bootstrap.pypa.io/get-pip.py | python3.4
+# PYTHON="/usr/bin/python3.4" PIP="/usr/bin/python3.4 -m pip"
 
-RUN yum -y install libffi-devel libxml2 libxml2-devel openssl-devel \
+RUN yum -y install centos-release-scl \
+ && yum -y install rh-python34 rh-python34-python-tkinter rh-python34-python-pip
+# PYTHON="scl enable rh-python34 python" PIP="scl enable rh-python34 pip"
+
+
+RUN yum -y install libffi-devel libxslt-devel libxml2 libxml2-devel openssl-devel \
  && yum clean all
 
 # install MOCCA (requires GUI)
@@ -31,25 +38,26 @@ ENV JAVA_HOME=/etc/alternatives/java_sdk_1.8.0 \
 
 WORKDIR /opt/PVZDpolman/PolicyManager
 # numpy must be installed before javabridge; javabridge before the rest because it requires a tighter range of lxml versions
-RUN python3.4 -m pip install numpy \
- && python3.4 -m pip install javabridge \
- && python3.4 -m pip install -r requirements.txt
+RUN scl enable rh-python34 'pip install numpy' \
+ && scl enable rh-python34 'pip install javabridge' \
+ && scl enable rh-python34 'pip install -r requirements.txt'
+
 
 WORKDIR /opt/PVZDpolman/PolicyManager/lib
 
 WORKDIR /opt/PVZDpolman/dependent_pkg
-RUN cd pyjnius && python3.4 setup.py install && make && cd .. \
- && cd json2html && python3.4 setup.py install
-#
+RUN cd pyjnius && scl enable rh-python34 'python setup.py install' && cd .. \
+ && cd json2html && scl enable rh-python34 'python setup.py install' && cd ..
+
 ARG USERNAME=user
 ARG UID=3000
 RUN groupadd --gid $UID $USERNAME \
  && useradd --gid $UID --uid $UID $USERNAME \
- && chown $USERNAME:$USERNAME /run
-#
-RUN chmod +x /opt/PVZDpolman/PolicyManager/bin/*.sh \
-    /opt/PVZDpolman/PolicyManager/tests/*.sh
+ && chown -R $USERNAME:$USERNAME /opt
+
+RUN chmod +x /opt/PVZDpolman/PolicyManager/bin/*.sh  /opt/PVZDpolman/PolicyManager/tests/*.sh
 WORKDIR /opt/PVZDpolman/PolicyManager
 COPY /install/scripts/start.sh /start.sh
+
 RUN chmod a+x /start.sh
 CMD ["/start.sh"]

@@ -19,9 +19,10 @@ get_or_update_repo() {
 repodir='install/opt/PVZDpolman'
 repourl='https://github.com/rhoerbe/PVZDpolman'
 get_or_update_repo
+cd 'install/opt/PVZDpolman/dependent_pkg'
+./download.sh
 
-cd 'install/opt/PVZDpolman/lib'
-
+cd '../lib'
 # --- PVZDjava ---
 # fetch/update when zip archive not found
 if [ ! -e 'pvzdjava_1.0.zip' ]; then
@@ -34,6 +35,7 @@ fi
 if [ ! -e 'moa-spss-lib-2.0.3.zip' ]; then
     curl -LO https://joinup.ec.europa.eu/system/files/project/moa-spss-lib-2.0.3.zip
     unzip moa-spss-lib-2.0.3.zip
+    rm -f moa-spss-lib 2> /dev/null
     ln -s moa-spss-lib-2.0.3 moa-spss-lib
 fi
 
