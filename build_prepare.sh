@@ -7,8 +7,10 @@ cd $workdir
 
 get_or_update_repo() {
     if [ -e $repodir ] ; then
-        cd $repodir && git pull && cd -    # already cloned
+        echo "pulling updates from $repodir"
+        cd $repodir && git pull && cd $OLDPWD    # already cloned
     else
+        echo "cloning $repodir"
         mkdir -p $repodir
         git clone $repourl $repodir        # first time
     fi
@@ -35,7 +37,6 @@ fi
 if [ ! -e 'moa-spss-lib-2.0.3.zip' ]; then
     curl -LO https://joinup.ec.europa.eu/system/files/project/moa-spss-lib-2.0.3.zip
     unzip moa-spss-lib-2.0.3.zip
-    rm -f moa-spss-lib 2> /dev/null
     ln -s moa-spss-lib-2.0.3 moa-spss-lib
 fi
 
