@@ -15,3 +15,9 @@ To keep the docker image immutable, mutable files are mounted to the docker host
     4. configure files in ./opt:
         - replace the default key material in opt/etc/pki!
     5. run docker_run.sh (run the container using the image created in step 1)
+    
+    
+Problem when pushing this container to docker hub:
+"unauthorized: authentication required" - upon push with successful login
+
+see solution for .docker/config.json in http://stackoverflow.com/questions/36663742/docker-unauthorized-authentication-required-upon-push-with-successful-login
