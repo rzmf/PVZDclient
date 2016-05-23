@@ -3,8 +3,8 @@
 # configure container
 export IMAGENAME="rhoerbe/pvzd-client-app"
 export CONTAINERNAME="pvzd-client"
-export CONTAINERUSER='user'  # but must start container with root to get pcscd started!
-export CONTAINERUID=7000
+export CONTAINERUSER='liveuser'  # but must start container with root to get pcscd started!
+export CONTAINERUID=1000  # same uid as liver user on docker host
 export BUILDARGS="
 "
 export ENVSETTINGS="
@@ -19,9 +19,9 @@ export VOLROOT="/tmp"  # container volumes on docker host
 # USB device name. Alternativel, devices can be mapped using '--device'
 export VOLMAPPING="
     --privileged -v /dev/bus/usb:/dev/bus/usb
-    -v $VOLROOT/var/log/:/var/log:Z
-    -v $VOLROOT/var/data/:/var/data:Z
     -v /tmp/.X11-unix/:/tmp/.X11-unix:Z
+    -v $VOLROOT/home/liveuser/:/home/liveuser:Z
+    -v $VOLROOT/tmp/pvzd-client-status/:/var/status:Z
 "
 export STARTCMD='/start.sh'
 

@@ -36,7 +36,7 @@ while getopts ":hin:pr" opt; do
 done
 shift $((OPTIND-1))
 
-SCRIPTDIR=$(cd $(dirname $BASH_SOURCE[0]) && pwd)
+SCRIPTDIR=$(dirname $BASH_SOURCE[0])
 source $SCRIPTDIR/conf${config_nr}.sh
 
 if [ -z "$runopt" ]; then
