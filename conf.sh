@@ -8,6 +8,8 @@ export CONTAINERUID=1000  # same uid as liver user on docker host
 export BUILDARGS="
 "
 export ENVSETTINGS="
+    -e USERNAME=$CONTAINERUSER
+    -e UID=$CONTAINERUID
     -e DISPLAY=$DISPLAY
 "
 export NETWORKSETTINGS="

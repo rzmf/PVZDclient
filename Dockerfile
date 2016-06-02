@@ -44,13 +44,13 @@ WORKDIR /opt/PVZDpolman/dependent_pkg
 RUN cd pyjnius && scl enable rh-python34 'python setup.py install' && cd .. \
  && cd json2html && scl enable rh-python34 'python setup.py install' && cd ..
 
-ARG USERNAME=user
-ARG UID=3000
+ARG USERNAME=liveuser
+ARG UID=1000
 RUN groupadd --gid $UID $USERNAME \
  && useradd --gid $UID --uid $UID $USERNAME \
  && chown -R $USERNAME:$USERNAME /opt
 
-RUN yum -y install sudo \
+RUN yum -y install gnome-terminal sudo \
  && yum clean all
 
 RUN chmod +x /opt/PVZDpolman/PolicyManager/bin/*.sh  /opt/PVZDpolman/PolicyManager/tests/*.sh
