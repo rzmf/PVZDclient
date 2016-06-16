@@ -8,16 +8,19 @@ if [ $(id -u) -ne 0 ]; then
     ./PAtool.sh --help
     bash
 fi
+logger -p local0.info "Starting Smartcard Service"
 pcscd
 echo "done" > /var/status$(date +%T)-pcscd
 
 echo "start" > /var/status/$(date +%T)-mocca
+logger -p local0.info "MOCCA Webstart (lokale Bürgerkartenumgebung)"
 gnome-terminal --hide-menubar -e "javaws http://webstart.buergerkarte.at/mocca/webstart/mocca.jnlp"
 sleep 5
 
 cd /opt/PVZDpolman/PolicyManager/bin
 sudo -u liveuser ./PAtool.sh --help
 echo "starting" > /var/status/$(date +%T)-PAtoolGui
+logger -p local0.info "Starting PAtoolGui"
 sudo -u liveuser ./PAtoolGui.sh
-echo "bash: exit to terminate container; scripts in local directory to start pvzd tools.
+echo "bash: exit to terminate container; scripts in local directory to start pvzd tools."
 sudo -u user bash
