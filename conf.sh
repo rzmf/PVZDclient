@@ -3,7 +3,11 @@
 # configure container
 export IMAGENAME="rhoerbe/pvzd-client-app"
 export CONTAINERNAME="pvzd-client"
-export CONTAINERUSER='liveuser'  # but must start container with root to get pcscd started!
+if [[ "$HOSTNAME" == "kalypso" ]]; then
+    export CONTAINERUSER='r2h2'  # devl
+else
+    export CONTAINERUSER='liveuser'  # livecd; but must start container with root to get pcscd started!
+fi
 export CONTAINERUID=1000  # same uid as liver user on docker host
 export BUILDARGS="
 "
