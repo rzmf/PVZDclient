@@ -18,4 +18,4 @@ sudo -u liveuser ./PAtool.sh --help
 logger -p local0.info "Starting PAtoolGui"
 sudo -u liveuser ./PAtoolGui.sh
 echo "bash: exit to terminate container; scripts in local directory to start pvzd tools."
-sudo -u liveuser bash
+sudo -u liveuser exec bash

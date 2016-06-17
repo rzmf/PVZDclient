@@ -51,6 +51,8 @@ RUN groupadd --gid $UID $USERNAME \
  && useradd --gid $UID --uid $UID $USERNAME \
  && chown -R $USERNAME:$USERNAME /opt
 
+# Allow sudo with nopasswords to work without tty
+RUN sed -i -e 's/^Defaults\s\+requiretty/#Defaults requiretty/' /etc/sudoers
 
 RUN chmod +x /opt/PVZDpolman/PolicyManager/bin/*.sh  /opt/PVZDpolman/PolicyManager/tests/*.sh
 WORKDIR /opt/PVZDpolman/PolicyManager
