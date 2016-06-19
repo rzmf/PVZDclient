@@ -14,14 +14,13 @@ fi
 if [ $(id -u) -ne 0 ]; then
     logger -p local0.info  "Need to be root to start pcscd. No smartcard service available now."
     ./PAtool.sh --help
-    bash
 fi
-logger -p local0.info "Starting Smartcard Service"
 
+logger -p local0.info "Starting Smartcard Service"
 $sudo /usr/sbin/pcscd
 
-logger -p local0.info "MOCCA Webstart (lokale Bürgerkartenumgebung)"
-javaws http://webstart.buergerkarte.at/mocca/webstart/mocca.jnlp &
+# start mocca and wait a bit for it to come up
+/start_mocca.sh &
 sleep 7
 
 cd /opt/PVZDpolman/PolicyManager/bin
