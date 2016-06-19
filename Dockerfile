@@ -52,13 +52,14 @@ ARG USERNAME=liveuser
 ARG UID=1000
 RUN groupadd --gid $UID $USERNAME \
  && useradd --gid $UID --uid $UID $USERNAME \
- && chown -R $USERNAME:$USERNAME /opt
+ && chown -R $USERNAME:$USERNAME /opt/PVZDpolman/PolicyManager
 
 # Allow sudo with nopasswords to work without tty
 RUN sed -i -e 's/^Defaults\s\+requiretty/#Defaults requiretty/' /etc/sudoers \
  && chmod +x /opt/PVZDpolman/PolicyManager/bin/*.sh  /opt/PVZDpolman/PolicyManager/tests/*.sh
-WORKDIR /opt/PVZDpolman/PolicyManager
 COPY /install/scripts/*.sh /
-
 RUN chmod a+x /*.sh
+
+WORKDIR /opt/PVZDpolman/PolicyManager/bin
+USER $USERNAME
 CMD ["/start.sh"]
