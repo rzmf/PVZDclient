@@ -13,7 +13,7 @@ logger -p local0.info "Starting Smartcard Service"
 pcscd
 
 logger -p local0.info "MOCCA Webstart (lokale Bürgerkartenumgebung)"
-gnome-terminal --title="MOCCA BKU" --zoom=0.7 --geometry=80x10 --hide-menubar -e "javaws http://webstart.buergerkarte.at/mocca/webstart/mocca.jnlp"
+dbus-launch gnome-terminal --zoom=0.65 --geometry=80x10 --hide-menubar -e "javaws http://webstart.buergerkarte.at/mocca/webstart/mocca.jnlp"
 sleep 5
 
 cd /opt/PVZDpolman/PolicyManager/bin

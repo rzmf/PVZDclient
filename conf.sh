@@ -10,8 +10,8 @@ else
 fi
 export CONTAINERUID=1000  # same uid as liver user on docker host
 export BUILDARGS="
-    -e USERNAME=$CONTAINERUSER
-    -e UID=$CONTAINERUID
+    --build-arg USERNAME=$CONTAINERUSER
+    --build-arg UID=$CONTAINERUID
 "
 export ENVSETTINGS="
     -e DISPLAY=$DISPLAY

@@ -41,7 +41,7 @@ shift $((OPTIND-1))
 cd $(dirname $BASH_SOURCE[0])
 source ./conf${config_nr}.sh
 
-[ -e build_prepare.sh ] && bash -x ./build_prepare.sh $update_pkg
+[ -e build_prepare.sh ] && ./build_prepare.sh $update_pkg
 
 if [ $(id -u) -ne 0 ]; then
     sudo="sudo"
