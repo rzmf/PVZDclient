@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
 
 # initialize and update the docker build environment
 
@@ -14,10 +14,9 @@ while getopts ":hnu" opt; do
       update_pkg="True"
       ;;
     *)
-      echo "usage: $0 [-h] [-i] [-n] [-p] [-r] [cmd]
-   -h  print this help text
-   -n  do not update git repos in docker build context
-   -u  update git repos in docker build context (default)
+      echo "usage: $0 [-n] [-u]
+   -n  do not update git repos in docker build context (default)
+   -u  update git repos in docker build context
 
    To update packages delivered as tar-balls just delete them from install/opt
    "
@@ -35,9 +34,10 @@ source ./conf${config_nr}.sh
 
 get_or_update_repo() {
     if [ -e $repodir ] ; then
-        [ "$update_pkg" ] \
-            && echo "updating $repodir" \
-            && cd $repodir && git pull && cd $OLDPWD
+        if [ "$update_pkg" == "True" ]; then
+            echo "updating $repodir"
+            cd $repodir && git pull && cd $OLDPWD
+        fi
     else
         echo "cloning $repodir" \
         mkdir -p $repodir
@@ -47,10 +47,11 @@ get_or_update_repo() {
 
 get_from_tarball() {
     if [ ! -e $pkgroot/$pkgdir ]; then \
-        [ "$update_pkg" ] \
-            && echo "downloading $pkgdir into $pkgroot" \
-            && mkdir $pkgroot/$pkgdir \
-            && curl -L $pkgurl | tar -xz -C $pkgroot
+        if [ "$update_pkg" == "True" ]; then
+            echo "downloading $pkgdir into $pkgroot"
+            mkdir $pkgroot/$pkgdir
+            curl -L $pkgurl | tar -xz -C $pkgroot
+        fi
     fi
 }
 
@@ -59,8 +60,9 @@ get_from_tarball() {
 repodir='install/opt/PVZDpolman'
 repourl='https://github.com/rhoerbe/PVZDpolman'
 get_or_update_repo
+
 cd 'install/opt/PVZDpolman/dependent_pkg'
-./download.sh
+./download.sh $update_pkg
 
 cd '../lib'
 # --- PVZDjava ---
