@@ -37,9 +37,12 @@ RUN scl enable rh-python34 'pip install Cython' \
 RUN scl enable rh-python34 'pip install numpy' \
  && scl enable rh-python34 'pip install javabridge'
 
-# install PVZD app
+COPY install/opt/PVZDpolman/PolicyManager/requirements.txt /opt/PVZDpolman/PolicyManager/requirements.txt
+RUN scl enable rh-python34 'pip install -r /opt/PVZDpolman/PolicyManager/requirements.txt' \
+ && yum clean all
+
+# install PVZD app (dependencies have been installed so far to minimize the nmber of changed layers on app updates
 COPY install/opt/PVZDpolman /opt/PVZDpolman
-RUN scl enable rh-python34 'pip install -r /opt/PVZDpolman/PolicyManager/requirements.txt'
 COPY install/opt/PVZDpolman/PolicyManager/bin/setEnv.sh.default /opt/PVZDpolman/PolicyManager/bin/setEnv.sh
 COPY install/opt/PVZDpolman/PolicyManager/bin/setConfig.sh.default /opt/PVZDpolman/PolicyManager/bin/setConfig.sh
 COPY install/opt/PVZDpolman/PolicyManager/src/localconfig.py.default /opt/PVZDpolman/PolicyManager/src/localconfig.py
@@ -52,12 +55,10 @@ RUN groupadd --gid $UID $USERNAME \
  && chown -R $USERNAME:$USERNAME /opt
 
 # Allow sudo with nopasswords to work without tty
-RUN sed -i -e 's/^Defaults\s\+requiretty/#Defaults requiretty/' /etc/sudoers
-
-RUN chmod +x /opt/PVZDpolman/PolicyManager/bin/*.sh  /opt/PVZDpolman/PolicyManager/tests/*.sh
+RUN sed -i -e 's/^Defaults\s\+requiretty/#Defaults requiretty/' /etc/sudoers \
+ && chmod +x /opt/PVZDpolman/PolicyManager/bin/*.sh  /opt/PVZDpolman/PolicyManager/tests/*.sh
 WORKDIR /opt/PVZDpolman/PolicyManager
-COPY /install/scripts/start.sh /start.sh
+COPY /install/scripts/*.sh /
 
-RUN chmod a+x /start.sh \
- && yum clean all
+RUN chmod a+x /*.sh
 CMD ["/start.sh"]
