@@ -1,0 +1,8 @@
+
+The config file contains an email account. If your are entitled to use the account and know the password:
+
+    openssl enc -d -aes-256-cbc -in patool_config.json.enc -out patool_config.json
+
+To change and re-encrypt it:
+
+    openssl enc -aes-256-cbc -in patool_config.json -out patool_config.json.enc
