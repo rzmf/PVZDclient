@@ -11,21 +11,13 @@ else
     sudo="sudo"
 fi
 
-if [ $(id -u) -ne 0 ]; then
-    logger -p local0.info  "Need to be root to start pcscd. No smartcard service available now."
-    ./PAtool.sh --help
-fi
-
 logger -p local0.info "Starting Smartcard Service"
 $sudo /usr/sbin/pcscd
 
 # start mocca and wait a bit for it to come up
 /start_mocca.sh &
-sleep 7
+sleep 10
 
 cd /opt/PVZDpolman/PolicyManager/bin
-./PAtool.sh --help
 logger -p local0.info "Starting PAtoolGui"
 ./PAtoolGui.sh
-echo "bash: exit to terminate container; scripts in local directory to start pvzd tools."
-bash
