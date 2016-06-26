@@ -32,5 +32,5 @@ DOCKERDATA_DIR Dateisystem unter folgendem Pfad gespeichert:
 
 Entweder über die LiveCD https://github.com/identinetics/PVZDliveCD[PCZDliveCD@Github] booten oder:
     
-    run docker_run.sh (run the container using the image created in step 1)
+    run.sh -h
     
