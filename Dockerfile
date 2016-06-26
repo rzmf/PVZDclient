@@ -66,7 +66,8 @@ USER $USERNAME
 WORKDIR /opt/setup/mocca_settings
 COPY install/mocca_settings /opt/setup/mocca_settings
 RUN tar -xzf mocca.tgz \
- && tar -xzf java.tgz
+ && tar -xzf java.tgz \
+ && tar -xzf icedteaweb.tgz
 
 WORKDIR /opt/PVZDpolman/PolicyManager/bin
 CMD ["/start.sh"]
