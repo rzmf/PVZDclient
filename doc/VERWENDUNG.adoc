@@ -27,9 +27,9 @@ Aufruf:
 
     /usr/local/bin/exec.sh aufgerufen # Shell im Container öffnen
     cd /opt/PVZDpolman/PolicyManager/bin/
-    // Zertifikate verwalten
+    # Zertifikate verwalten
     ./PAtool.sh --help
-     Policy Management Point verwalten (PV-Teilnehmer und ihre Domänen, Portal-Admins)
+    # Policy Management Point verwalten (PV-Teilnehmer und ihre Domänen, Portal-Admins)
     ./PMP.sh --help
 
 ### Sonstiges
