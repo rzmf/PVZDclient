@@ -28,7 +28,6 @@ export VOLMAPPING="
     --privileged -v /dev/bus/usb:/dev/bus/usb
     -v /tmp/.X11-unix/:/tmp/.X11-unix:Z
     -v $VOLROOT/home/liveuser/:/home/liveuser:Z
-    -v $VOLROOT/tmp/pvzd-client-status/:/var/status:Z
 "
 export STARTCMD='/start.sh'
 
