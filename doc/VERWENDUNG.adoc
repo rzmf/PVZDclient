@@ -1,13 +1,13 @@
 # PVZD Client
 
 Wenn der Docker Container mit der Anwendung gestartet wird, werden folgende
-Schritte ausgeführt:
+Komponenten gestartet:
 
-- Start des SmartCard Service
-- Start von MOCCA (Bürgerkartenumgebung)
-- Start des GUI für die PAtool Utilty
-- Wird das GUI beendet, wird auch der Docker Container beendet und gelöscht
-- Ein nochmaliger Aufruf erfolgt mit
+- MOCCA (Bürgerkartenumgebung)
+- PAtool GUI
+
+Wird das GUI beendet, wird auch der Docker Container beendet und gelöscht.
+Ein nochmaliger Aufruf erfolgt vom Terminal mit:
 
   /usr/local/bin/startall_user.sh
 
@@ -16,19 +16,20 @@ Schritte ausgeführt:
 In der GUI Anwendung können EntityDescriptor Dokumente erstellt, signiert und
 versendet werden.
 
-### Funktionen für den Depositar
-Über das Terminal werden weitere Funktionen angeboten:
+### Funktionen von der Commandline
+Über das Terminal werden zusätzliche Funktionen angeboten:
 
 - Zertifikatsverwaltung
-- Rechteverwaltung (Registrierung von PV-Teilnehmern, ihren Domänen und den Portaladministratoren)
+- Export der IDP Siganturzertifiakte aus den Metadaten
+- Depositarfunktionen (Registrierung von PV-Teilnehmern, ihren Domänen und den Portaladministratoren, ..)
 
 Aufruf:
 
     /usr/local/bin/exec.sh aufgerufen # Shell im Container öffnen
     cd /opt/PVZDpolman/PolicyManager/bin/
-    # Zertifikate verwalten
+    // Zertifikate verwalten
     ./PAtool.sh --help
-    # Policy Management Point verwalten (PV-Teilnehmer und ihre Domänen, Portal-Admins)
+     Policy Management Point verwalten (PV-Teilnehmer und ihre Domänen, Portal-Admins)
     ./PMP.sh --help
 
 ### Sonstiges
