@@ -16,7 +16,6 @@ $sudo /usr/sbin/pcscd
 
 # start mocca and wait a bit for it to come up
 /start_mocca.sh &
-sleep 10
 
 cd /opt/PVZDpolman/PolicyManager/bin
 logger -p local0.info "Starting PAtoolGui"
