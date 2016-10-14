@@ -14,10 +14,12 @@ fi
 cd /opt/PVZDpolman/PolicyManager/bin
 sudo -u liveuser ./PMP.sh --help
 
-if [ -e "$$POLMAN_AODS" ]; then
-    echo "Ein Policy Store wurde in $$POLMAN_AODS gefunden. Es braucht im CLI nicht über -a übergeben werden."
-fi
+if [ -z ${POLMAN_AODS+x} ]; then
     echo "Das Policy Store wurde unter $AODS nicht gefunden. Ein neues kann wie folgt erstellt werden:"
     echo "./PMP.sh create"
+else
+    echo "Ein Policy Store wurde in $$POLMAN_AODS gefunden und wird von PMP automatisch erkannt. Z.B.:"
+    echo "./PMP.sh append /home/liveuser/pmp_input.json"
+fi
 
 sudo -u user bash
