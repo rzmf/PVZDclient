@@ -1,23 +1,23 @@
 #!/bin/sh
-# startup script used in entrypoint of the docker container
+# startup script for CLI app with docker exec (container already started)
 
-echo "start" > /var/status/$(date +%T)-pcscd
-if [ $(id -u) -ne 0 ]; then
-    echo "failed (not root)" > /var/status/$(date +%T)-pcscd
-    echo "need to be root to start pcscd. No smartcard service available now."
-    ./PAtool.sh --help
-    bash
+
+if [ -z "${$POLMAN_AODS+x}" ]; then
+    echo "Environment Variable POLMAN_AODS ist nicht gesetzt"
+    exit 1
+else
+    PMP_HOME=$(cd $(dirname $$POLMAN_AODS) && pwd)
+    mkdir -p $PMP_HOME
+
 fi
-pcscd
-echo "done" > /var/status$(date +%T)-pcscd
-
-echo "start" > /var/status/$(date +%T)-mocca
-gnome-terminal --hide-menubar -e "javaws http://webstart.buergerkarte.at/mocca/webstart/mocca.jnlp"
-sleep 5
 
 cd /opt/PVZDpolman/PolicyManager/bin
-sudo -u liveuser ./PAtool.sh --help
-echo "starting" > /var/status/$(date +%T)-PAtoolGui
-sudo -u liveuser ./PAtoolGui.sh
-echo "bash: exit to terminate container; scripts in local directory to start pvzd tools.
+sudo -u liveuser ./PMP.sh --help
+
+if [ -e "$$POLMAN_AODS" ]; then
+    echo "Ein Policy Store wurde in $$POLMAN_AODS gefunden. Es braucht im CLI nicht über -a übergeben werden."
+fi
+    echo "Das Policy Store wurde unter $AODS nicht gefunden. Ein neues kann wie folgt erstellt werden:"
+    echo "./PMP.sh create"
+
 sudo -u user bash
