@@ -62,6 +62,8 @@ RUN sed -i -e 's/^Defaults\s\+requiretty/#Defaults requiretty/' /etc/sudoers \
 COPY /install/scripts/*.sh /
 RUN chmod a+x /*.sh
 
+RUN echo 'export PS1="\\u@\H \\W]\\$"' > /etc/profile.d/ps1
+
 USER $USERNAME
 WORKDIR /opt/setup/mocca_settings
 COPY install/mocca_settings /opt/setup/mocca_settings
@@ -70,6 +72,4 @@ RUN tar -xzf mocca.tgz \
  && tar -xzf icedteaweb.tgz
 
 WORKDIR /opt/PVZDpolman/PolicyManager/bin
-RUN echo PS1="\\u@\H \\W]\\$" >> /home/$USERNAME/.bashrc \
- && source /home/$USERNAME/.bashrc
 CMD ["/start.sh"]

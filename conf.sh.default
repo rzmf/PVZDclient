@@ -53,3 +53,7 @@ if ! id -u $CONTAINERUSER &>/dev/null; then
             ;;
     esac
 fi
+
+if [ ! -e "$VOLROOT/home/liveuser/.bashrc" ]; then
+    echo 'export PS1="\\u@\H \\W]\\$"' >> $VOLROOT/home/liveuser/.bashrc
+fi
