@@ -70,5 +70,6 @@ RUN tar -xzf mocca.tgz \
  && tar -xzf icedteaweb.tgz
 
 WORKDIR /opt/PVZDpolman/PolicyManager/bin
-export PS1="\\u@\H \\W]\\$"
+echo PS1="\\u@\H \\W]\\$" >> /home/$USERNAME/.bashrc
+source /home/$USERNAME/.bashrc
 CMD ["/start.sh"]
