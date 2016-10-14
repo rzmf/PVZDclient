@@ -1,0 +1,36 @@
+# PVZDzClient docker image
+
+Dieses Docker Image stellt die Client-Werkzeuge PMP und PAtool für 
+die zentralen Dienste im Portalverbund bereit. Die Verwendung wird
+in Kombination mit einem gehärteten Linux empfohlen.
+
+Der Container speichert keine persistenten Daten; diese werden am Docker-Host
+gehalten - siehe Volume Mapping in conf.sh.
+
+## Konfiguration Teil 1 und Build
+
+    1. conf.sh anpassen
+    2. ./build.sh -u
+    3. docker push 
+
+    
+Problem mit docker pushing zum Docker Hub:
+"unauthorized: authentication required" - upon push with successful login
+siehe .docker/config.json in http://stackoverflow.com/questions/36663742/docker-unauthorized-authentication-required-upon-push-with-successful-login
+
+
+## Konfiguration Teil 2
+
+Um die erzeugten XML-Dokumente per eMail zu versenden ist ein E-Mail Konto zu konfigurieren.
+Dazu wird die Datei install/pvzd_settings/patool_config.json.example angepasst und auf dem
+DOCKERDATA_DIR Dateisystem unter folgendem Pfad gespeichert:
+
+    home/liveuser/patool_config.json  # für LiveCD, sonst im Home-Verzeichnis
+
+
+## Aufruf
+
+Entweder über die LiveCD https://github.com/identinetics/PVZDliveCD[PCZDliveCD@Github] booten oder:
+    
+    run.sh -h
+    

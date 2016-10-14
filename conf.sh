@@ -5,13 +5,18 @@ DOCKERVOL_ROOT='/docker_volumes'
 # configure container
 export IMAGENAME="rhoerbe/pvzd-client-app"
 export CONTAINERNAME="pvzd-client"
-export CONTAINERUSER='liveuser'  # but must start container with root to get pcscd started!
+#if [[ "$HOSTNAME" == "kalypso" ]]; then
+#    export CONTAINERUSER='r2h2'  # devl
+#else
+#    export CONTAINERUSER='liveuser'  # livecd; but must start container with root to get pcscd started!
+#fi
+export CONTAINERUSER='liveuser'  # livecd; but must start container with root to get pcscd started!
 export CONTAINERUID=1000  # same uid as liver user on docker host
 export BUILDARGS="
+    --build-arg USERNAME=$CONTAINERUSER
+    --build-arg UID=$CONTAINERUID
 "
 export ENVSETTINGS="
-    -e USERNAME=$CONTAINERUSER
-    -e UID=$CONTAINERUID
     -e DISPLAY=$DISPLAY
 "
 export NETWORKSETTINGS="
@@ -19,13 +24,12 @@ export NETWORKSETTINGS="
 export VOLROOT="$DOCKERVOL_ROOT/$CONTAINERNAME"  # test env; use different value on LiveCD
 
 # mounting var/lock/.., var/run to get around permission problems when starting non-root
-# --privileged mapping of usb devices allows a generic configreation without knowing the
-# USB device name. Alternativel, devices can be mapped using '--device'
+# --privileged mapping of usb devices allows a generic configuration without knowing the
+# USB device name. Alternatively, specific devices can be mapped using '--device'
 export VOLMAPPING="
     --privileged -v /dev/bus/usb:/dev/bus/usb
     -v /tmp/.X11-unix/:/tmp/.X11-unix:Z
     -v $VOLROOT/home/liveuser/:/home/liveuser:Z
-    -v $VOLROOT/tmp/pvzd-client-status/:/var/status:Z
 "
 export STARTCMD='/start.sh'
 

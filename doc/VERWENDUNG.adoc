@@ -1,0 +1,61 @@
+# PVZD Client
+
+Wenn der Docker Container mit der Anwendung gestartet wird, werden folgende
+Komponenten gestartet:
+
+- MOCCA (Bürgerkartenumgebung)
+- PAtool GUI
+
+Wird das GUI beendet, wird auch der Docker Container beendet und gelöscht.
+Ein nochmaliger Aufruf erfolgt vom Terminal mit:
+
+  /usr/local/bin/startall_user.sh
+
+
+### Funktionen im GUI
+In der GUI Anwendung können EntityDescriptor Dokumente erstellt, signiert und
+versendet werden.
+
+### Funktionen von der Commandline
+Über das Terminal werden zusätzliche Funktionen angeboten:
+
+- Zertifikatsverwaltung
+- Export der IDP Signaturzertifikate aus den Metadaten
+- Depositarfunktionen (Registrierung von PV-Teilnehmern, ihren Domänen und den Portaladministratoren, ..)
+
+Aufruf:
+
+    /usr/local/bin/exec.sh aufgerufen # Shell im Container öffnen
+    cd /opt/PVZDpolman/PolicyManager/bin/
+    # Zertifikate verwalten
+    ./PAtool.sh --help
+    # Policy Management Point verwalten (PV-Teilnehmer und ihre Domänen, Portal-Admins)
+    ./PMP.sh --help
+
+### Prüfung der Metadatensignatur
+Um Zertifikate aus den Metadaten zu exportieren muss unbedingt vorher die Signatur der
+Metadaten geprüft werden, sonst kann man den Zertifikaten nicht vertrauen. Dazu muss vorher
+das Metadatenzertifikat vom Depositar auf gesichertem Weg beschafft werden. Im folgenden
+Beispiel wird davon ausgegangen, dass es unter /home/liveuser/metadata/metadata_crt.pem
+vorhanden ist:
+
+    curl -kO http://mdfeed.test.portalverbund.gv.at/metadata.xml
+    /opt/PVZDpolman/dependent_pkg/xmlsectool-2.0.0-beta-2/xmlsectool.sh --inFile metadata.xml --certificate metadata_crt.pem --whitelistDigest SHA-1 --verifySignature
+    retcode= $?
+    if [ "$retcode" == 0 ]; then
+      echo signature ok
+    else
+      echo signature broken
+    fi
+
+
+### Sonstiges
+
+Um Daten auch per Datenträger einlesen zu können kann ein Windows-kompatibler Datenträger helfen. Um
+eine 2. Partition auf dem Docker-USB Drive einzurichten, würde man bei einem 16GB-Stick z.B. wie folgt vorgehen:
+
+    # mit dmesg die Geräteadresse ermitteln, z.B. /dev/sdb
+    sudo fdisk /dev/sdb
+    # 2 primäre Partitionen erstellen, 13G + Rest (ca. 2,5G)
+    sudo mkfs.ext4 -L dockerdata /dev/sdb1
+    sudo mkfs.vfat -F 32 -n pvzddata /dev/sdb2

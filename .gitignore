@@ -2,5 +2,6 @@
 .idea
 conf*.sh
 install/opt/PVZDpolman
+install/pvzd_settings/pvzd_config.json
 work
 

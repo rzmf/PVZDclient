@@ -1,23 +1,22 @@
-#!/bin/sh
+#!/bin/bash
 # startup script used in entrypoint of the docker container
 
-echo "start" > /var/status/$(date +%T)-pcscd
-if [ $(id -u) -ne 0 ]; then
-    echo "failed (not root)" > /var/status/$(date +%T)-pcscd
-    echo "need to be root to start pcscd. No smartcard service available now."
-    ./PAtool.sh --help
-    bash
-fi
-pcscd
-echo "done" > /var/status$(date +%T)-pcscd
+# format debug output if using bash -x
+export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
 
-echo "start" > /var/status/$(date +%T)-mocca
-gnome-terminal --hide-menubar -e "javaws http://webstart.buergerkarte.at/mocca/webstart/mocca.jnlp"
-sleep 5
+if [ $(id -u) -eq 0 ]; then
+    echo "do not run this script as root"
+    exit 1
+else
+    sudo="sudo"
+fi
+
+logger -p local0.info "Starting Smartcard Service"
+$sudo /usr/sbin/pcscd
+
+# start mocca and wait a bit for it to come up
+/start_mocca.sh &
 
 cd /opt/PVZDpolman/PolicyManager/bin
-sudo -u liveuser ./PAtool.sh --help
-echo "starting" > /var/status/$(date +%T)-PAtoolGui
-sudo -u liveuser ./PAtoolGui.sh
-echo "bash: exit to terminate container; scripts in local directory to start pvzd tools.
-sudo -u user bash
+logger -p local0.info "Starting PAtoolGui"
+./PAtoolGui.sh
