@@ -1,4 +1,4 @@
 doc/*
-/*.sh
+conf*.sh
 README.md
 work/**
