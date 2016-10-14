@@ -8,7 +8,7 @@ RUN yum -y groupinstall "X Window System" --setopt=group_package_types=mandatory
  && yum -y install java-1.8.0-openjdk-devel.x86_64
 
 # Need dbus running for USB interface -> https://github.com/CentOS/sig-cloud-instance-images/issues/22
-ENV container docker
+# ENV container docker unused
 RUN yum -y swap -- remove systemd-container systemd-container-libs -- install systemd systemd-libs
 
 RUN yum -y install centos-release-scl \
