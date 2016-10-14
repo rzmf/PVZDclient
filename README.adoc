@@ -7,16 +7,34 @@ in Kombination mit einem gehärteten Linux empfohlen.
 Der Container speichert keine persistenten Daten; diese werden am Docker-Host
 gehalten - siehe Volume Mapping in conf.sh.
 
-## Konfiguration Teil 1 und Build
+## Build & Test
 
-    1. conf.sh anpassen
     2. ./build.sh -u
-    3. docker push 
+    3. docker push
+    # build process with manual testing:
+    git clone https://github.com/identinetics/PVZDclient.git
+    git submodule init && git submodule update
+    cd dscripts && git checkout master && cd ..
+    cp conf.sh.default conf.sh
+    # conf.sh anpassen
+    ./dscripts/build.sh # build docker image
+
+    # run benötigt Docker/Linux mit einem X-Server für den GUI client
+    ./dscripts/run.sh
+    # run unit tests in the terminal window
+
+    # run manual tests in GUI and CLI
+
+    # release process:
+    docker push $IMAGENAME
+    # boot PVZDliveCD (will fetch latest docker image if online)
+    # test manually
+    run.sh -h
 
     
-Problem mit docker pushing zum Docker Hub:
+Problem mit docker push zum Docker Hub:
 "unauthorized: authentication required" - upon push with successful login
-siehe .docker/config.json in http://stackoverflow.com/questions/36663742/docker-unauthorized-authentication-required-upon-push-with-successful-login
+Lösung: siehe .docker/config.json in http://stackoverflow.com/questions/36663742/docker-unauthorized-authentication-required-upon-push-with-successful-login
 
 
 ## Konfiguration Teil 2
@@ -27,10 +45,11 @@ DOCKERDATA_DIR Dateisystem unter folgendem Pfad gespeichert:
 
     home/liveuser/patool_config.json  # für LiveCD, sonst im Home-Verzeichnis
 
+Alternativ kann man die Dokumente auf eine Webseite hochladen oder mit dem USB-Drive
+auf ein anderes System übertragen.
 
 ## Aufruf
 
-Entweder über die LiveCD https://github.com/identinetics/PVZDliveCD[PCZDliveCD@Github] booten oder:
+Entweder über die LiveCD https://github.com/identinetics/PVZDliveCD[PCZDliveCD@Github] booten oder lokal
     
-    run.sh -h
-    
+
