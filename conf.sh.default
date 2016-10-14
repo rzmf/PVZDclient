@@ -42,7 +42,7 @@ if ! id -u $CONTAINERUSER &>/dev/null; then
             ;;
         linux-gnu) #CentOs
             $sudo groupadd -g $CONTAINERUID $CONTAINERUSER
-            $sudo adduser -M --gid $CONTAINERUID --comment "" --uid $CONTAINERUID $CONTAINERUSER
+            $sudo adduser -M --non-unique --gid $CONTAINERUID --comment "" --uid $CONTAINERUID $CONTAINERUSER
             ;;
         linux)  #Debian
             $sudo groupadd -g $CONTAINERUID $CONTAINERUSER
