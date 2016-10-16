@@ -66,8 +66,8 @@ function chkdir {
     $sudo chown -R $user:$user "$VOLROOT/$dir"
 }
 
-chkdir log/pvzd
-chkdir log/moasp
+chkdir log/pvzd $CONTAINERUSER
+chkdir log/moasp $CONTAINERUSER
 
 # === Optional settings for sshd (development only) ===
 

@@ -8,4 +8,4 @@ fi
 
 cd /opt/PVZDpolman/PolicyManager/tests
 
-/testAll.sh -s noninteractive
+./testAll.sh -s noninteractive
