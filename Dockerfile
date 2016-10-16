@@ -69,7 +69,7 @@ ARG UID=1000
 RUN groupadd --gid $UID $USERNAME \
  && useradd --gid $UID --uid $UID $USERNAME \
  && mkdir -p /opt/setup/mocca_settings \
- && chown -R $USERNAME:$USERNAME /opt/PVZDpolman/PolicyManager /opt/setup/mocca_settings chown /opt/PVZDpolman/conf/moa-spss/
+ && chown -R $USERNAME:$USERNAME /opt/PVZDpolman/PolicyManager /opt/setup/mocca_settings /opt/PVZDpolman/conf/moa-spss/
 COPY install/sudoers.d/liveuser /etc/sudoers.d/liveuser
 
 # Allow sudo with nopasswords to work without tty
