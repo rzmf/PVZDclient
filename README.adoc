@@ -23,6 +23,7 @@ gehalten - siehe Volume Mapping in conf.sh.
     ./dscripts/run.sh
     # run unit tests in the terminal window
 
+
     # run manual tests in GUI and CLI
 
     # release process:

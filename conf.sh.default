@@ -26,6 +26,7 @@ export VOLMAPPING="
     -v /tmp/.X11-unix/:/tmp/.X11-unix:Z
     -v $VOLROOT/home/liveuser/:/home/liveuser:Z
     -v $VOLROOT/tmp/pvzd-client-status/:/var/status:Z
+    -v $VOLROOT/log/:/var/log/pvzd:Z
 "
 export STARTCMD='/start.sh'
 
@@ -57,3 +58,26 @@ fi
 if [ ! -e "$VOLROOT/home/liveuser/.bashrc" ]; then
     echo 'export PS1="\\u@\H \\W]\\$"' >> $VOLROOT/home/liveuser/.bashrc
 fi
+
+function chkdir {
+    dir=$1; user=$2
+    $sudo mkdir -p "$VOLROOT/$dir"
+    $sudo chown -R $user:$user "$VOLROOT/$dir"
+}
+
+chkdir log
+
+# === Optional settings for sshd (development only) ===
+
+export NETWORKSETTINGS="$NETWORKSETTINGS -p 2022:2022"
+export VOLMAPPING="$VOLMAPPING
+    -v $VOLROOT/opt/etc:/opt/etc:Z
+    -v $VOLROOT/root/.ssh:/root/.ssh:Z
+    -v $VOLROOT/root/.pycharm_helpers:/root/.pycharm_helpers:Z
+"
+#export ENVSETTINGS="$ENVSETTINGS -e SSHPW=changeit"
+chkdir opt/etc/ssh
+chkdir $VOLROOT/root/.ssh
+chkdir $VOLROOT/root/.pycharm_helpers
+
+# End sshd option ===
