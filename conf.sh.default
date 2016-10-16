@@ -26,7 +26,8 @@ export VOLMAPPING="
     -v /tmp/.X11-unix/:/tmp/.X11-unix:Z
     -v $VOLROOT/home/liveuser/:/home/liveuser:Z
     -v $VOLROOT/tmp/pvzd-client-status/:/var/status:Z
-    -v $VOLROOT/log/:/var/log/pvzd:Z
+    -v $VOLROOT/log/pvzd:/var/log/pvzd:Z
+    -v $VOLROOT/log/moasp:/opt/var/log:Z
 "
 export STARTCMD='/start.sh'
 
@@ -65,7 +66,8 @@ function chkdir {
     $sudo chown -R $user:$user "$VOLROOT/$dir"
 }
 
-chkdir log
+chkdir log/pvzd
+chkdir log/moasp
 
 # === Optional settings for sshd (development only) ===
 
