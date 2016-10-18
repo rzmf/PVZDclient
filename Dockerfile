@@ -15,34 +15,7 @@ RUN yum -y groupinstall "X Window System" --setopt=group_package_types=mandatory
 RUN yum -y swap -- remove systemd-container systemd-container-libs -- install systemd systemd-libs \
  && yum clean all
 
-# Install Python interpreter
-# while the scl version of python 3.4 has the advantage of redhat's blessing, it is more
-# difficult to handle because it requires `scl enable`. For remote debugging with pycharm
-# the EPEL or IUS versions are preferred.
-# SCL version
-    #RUN yum -y install centos-release-scl \
-    # && yum -y install rh-python34 rh-python34-python-tkinter rh-python34-python-pip \
-    # && source /opt/rh/rh-python34/enable
-    #ENV PY3='scl enable rh-python34 -- python'
-    #ENV PIP='pip'
-# CentOS 7: (tkinter is not supplied)
-    #RUN yum -y install python34-devel \
-    # && curl https://bootstrap.pypa.io/get-pip.py | python3.4
-    #ENV PY3='python3.4'
-    #ENV PIP='pip3.4'
-# IUS (both 3.4 and 3.5 available:
-RUN yum -y install https://centos7.iuscommunity.org/ius-release.rpm \
- && yum -y install python34u python34u-setuptools python34u-devel python34u-pip python34u-tkinter \
- && yum clean all
-
-ENV PY3='python3.4'
-ENV PIP='pip3.4'
-RUN echo "export PY3=$PY3" >> /etc/profile
-
-RUN yum -y install libffi-devel libxslt-devel libxml2 libxml2-devel openssl-devel \
- && yum clean all
-
-# install MOCCA (+Jaba Webstart, pcsc)
+# install MOCCA (+Java Webstart, pcsc)
 RUN yum -y install icedtea-web pcsc-lite usbutils \
  && yum clean all \
  && curl -O http://webstart.buergerkarte.at/mocca/webstart/mocca.jnlp
@@ -51,19 +24,50 @@ ENV JAVA_HOME=/etc/alternatives/java_sdk_1.8.0 \
     JDK_HOME=/etc/alternatives/java_sdk_1.8.0 \
     JRE_HOME=/etc/alternatives/java_sdk_1.8.0/jre
 
+# Install Python interpreter
+# while the scl version of python 3.4 has the advantage of redhat's blessing, it is more
+# difficult to handle because it requires `scl enable`. For remote debugging with pycharm
+# the EPEL or IUS versions are preferred.
+# SCL version
+RUN yum -y install centos-release-scl \
+ && yum -y install rh-python34 rh-python34-python-tkinter rh-python34-python-pip
+RUN source /opt/rh/rh-python34/enable \
+ && echo "source /opt/rh/rh-python34/enable" > /etc/profile.d/setpython \
+ && echo "export PY3=python" >> /etc/profile.d/setpython
+ENV PIP3='source /opt/rh/rh-python34/enable && /opt/rh/rh-python34/root/usr/bin/pip'
+ENV PY3='scl enable rh-python34 -- python'
+# CentOS 7: (tkinter is not supplied)
+    #RUN yum -y install python34-devel \
+    # && curl https://bootstrap.pypa.io/get-pip.py | python3.4
+    #ENV PY3='python3.4'
+    #ENV PIP='pip3.4'
+    #RUN echo "export PY3=$PY3" >> /etc/profile
+# IUS (both 3.4 and 3.5 available:
+    #RUN yum -y install https://centos7.iuscommunity.org/ius-release.rpm \
+    # && yum -y install python34u python34u-setuptools python34u-devel python34u-pip python34u-tkinter
+    # && yum clean all
+    #ENV PY3='python3.4'
+    #ENV PIP='pip3.4'
+    #RUN echo "export PY3=$PY3" >> /etc/profile
+
+RUN eval "$PIP3 install gitdb"
+
+RUN yum -y install libffi-devel libxslt-devel libxml2 libxml2-devel openssl-devel \
+ && yum clean all
+
 COPY install/opt/PVZDpolman/dependent_pkg /opt/PVZDpolman/dependent_pkg
 WORKDIR /opt/PVZDpolman/dependent_pkg
-RUN $PIP install Cython
+RUN eval "$PIP3 install Cython"
 RUN cd pyjnius && $PY3 setup.py install && cd .. \
  && cd json2html && $PY3 setup.py install && cd .. \
  && cd signxml && $PY3 setup.py install && cd ..
 
 # numpy must be installed before javabridge; javabridge before the rest because it requires a tighter range of lxml versions
-RUN $PIP install numpy \
- && $PIP install javabridge
+RUN eval "$PIP3 install numpy" \
+ && eval "$PIP3 install javabridge"
 #
 COPY install/opt/PVZDpolman/PolicyManager/requirements.txt /opt/PVZDpolman/PolicyManager/requirements.txt
-RUN $PIP install -r /opt/PVZDpolman/PolicyManager/requirements.txt
+RUN eval "$PIP3 install -r /opt/PVZDpolman/PolicyManager/requirements.txt"
 # install PVZD app (dependencies have been installed so far to minimize the nmber of changed layers on app updates
 COPY install/opt/PVZDpolman /opt/PVZDpolman
 COPY install/opt/PVZDpolman/PolicyManager/bin/setEnv.sh.default /opt/PVZDpolman/PolicyManager/bin/setEnv.sh

@@ -20,7 +20,7 @@ export VOLROOT="$DOCKERVOL_ROOT/$CONTAINERNAME"  # test env; use different value
 
 # mounting var/lock/.., var/run to get around permission problems when starting non-root
 # --privileged mapping of usb devices allows a generic configreation without knowing the
-# USB device name. Alternativel, devices can be mapped using '--device'
+# USB device name. Alternatively, devices can be mapped using '--device'
 export VOLMAPPING="
     --privileged -v /dev/bus/usb:/dev/bus/usb
     -v /tmp/.X11-unix/:/tmp/.X11-unix:Z
