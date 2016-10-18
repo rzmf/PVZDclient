@@ -1,14 +1,19 @@
 FROM centos:centos7
 MAINTAINER r2h2 <rhoerbe@hoerbe.at>
 
-RUN yum -y install curl git gcc gcc-c++ ip lsof net-tools openssl sudo wget which
+RUN yum -y update && yum clean all
+
+RUN yum -y install curl git gcc gcc-c++ ip lsof net-tools openssl sudo wget which \
+ && yum clean all
 
 RUN yum -y groupinstall "X Window System" --setopt=group_package_types=mandatory \
  && yum -y install xclock gnome-terminal \
- && yum -y install java-1.8.0-openjdk-devel.x86_64
+ && yum -y install java-1.8.0-openjdk-devel.x86_64 \
+ && yum clean all
 
 # Need dbus running for USB interface -> https://github.com/CentOS/sig-cloud-instance-images/issues/22
-RUN yum -y swap -- remove systemd-container systemd-container-libs -- install systemd systemd-libs
+RUN yum -y swap -- remove systemd-container systemd-container-libs -- install systemd systemd-libs \
+ && yum clean all
 
 # Install Python interpreter
 # while the scl version of python 3.4 has the advantage of redhat's blessing, it is more
@@ -27,7 +32,9 @@ RUN yum -y swap -- remove systemd-container systemd-container-libs -- install sy
     #ENV PIP='pip3.4'
 # IUS (both 3.4 and 3.5 available:
 RUN yum -y install https://centos7.iuscommunity.org/ius-release.rpm \
- && yum -y install python34u python34u-setuptools python34u-devel python34u-pip python34u-tkinter
+ && yum -y install python34u python34u-setuptools python34u-devel python34u-pip python34u-tkinter \
+ && yum clean all
+
 ENV PY3='python3.4'
 ENV PIP='pip3.4'
 RUN echo "export PY3=$PY3" >> /etc/profile
@@ -83,6 +90,7 @@ RUN echo 'export PS1="\\u@\H \\W]\\$"' > /etc/profile.d/ps1
 
 # For development/debugging - map port in config and start sshd with /start_sshd.sh
 RUN yum -y install openssh-server \
+ && yum clean all \
  && echo changeit | passwd -f --stdin $USERNAME \
  && echo changeit | passwd -f --stdin root
 
