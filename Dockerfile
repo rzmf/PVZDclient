@@ -90,7 +90,7 @@ RUN sed -i -e 's/^Defaults\s\+requiretty/#Defaults requiretty/' /etc/sudoers \
 COPY /install/scripts/*.sh /
 RUN chmod a+x /*.sh
 
-RUN echo 'export PS1="\\u@\H \\W]\\$"' > /etc/profile.d/ps1
+RUN echo 'export PS1="\\u@\H \\W]\\$"' >> /etc/profile   # creating a file in /etc/profile.d did not work
 
 # For development/debugging - map port in config and start sshd with /start_sshd.sh
 RUN yum -y install openssh-server \
