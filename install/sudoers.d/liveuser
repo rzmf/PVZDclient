@@ -1,2 +1,3 @@
 Defaults:liveuser !requiretty
-liveuser ALL=(root) NOPASSWD: /usr/sbin/pcscd
+#liveuser ALL=(root) NOPASSWD: /usr/sbin/pcscd  # for production
+liveuser ALL=(root) NOPASSWD: ALL   # during testing phase
