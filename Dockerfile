@@ -6,9 +6,7 @@ RUN yum -y update && yum clean all
 RUN yum -y install curl git gcc gcc-c++ ip lsof net-tools openssl sudo wget which \
  && yum clean all
 
-RUN yum -y groupinstall "X Window System" --setopt=group_package_types=mandatory \
- && yum -y install xclock gnome-terminal \
- && yum -y install java-1.8.0-openjdk-devel.x86_64 \
+RUN yum -y install xorg-x11-xinit xorg-x11-fonts-100dpi xterm java-1.8.0-openjdk-devel.x86_64 \
  && yum clean all
 
 # Need dbus running for USB interface -> https://github.com/CentOS/sig-cloud-instance-images/issues/22
