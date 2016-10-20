@@ -30,7 +30,8 @@ ENV JAVA_HOME=/etc/alternatives/java_sdk_1.8.0 \
 # the EPEL or IUS versions are preferred.
 # SCL version
 RUN yum -y install centos-release-scl \
- && yum -y install rh-python34 rh-python34-python-tkinter rh-python34-python-pip
+ && yum -y install rh-python34 rh-python34-python-tkinter rh-python34-python-pip \
+ && yum clean all
 RUN source /opt/rh/rh-python34/enable \
  && echo "source /opt/rh/rh-python34/enable" > /etc/profile.d/setpython \
  && echo "export PY3=python" >> /etc/profile.d/setpython
